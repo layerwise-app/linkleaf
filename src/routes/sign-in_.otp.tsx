@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { authClient } from '~/lib/auth-client';
+import { Logo } from '~/components/brand/Logo';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -57,7 +58,8 @@ function EmailOtpPage() {
   });
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
+    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-4'>
+      <Logo />
       <Card className='w-full max-w-sm'>
         <CardHeader>
           <CardTitle>Check your email</CardTitle>
@@ -67,6 +69,7 @@ function EmailOtpPage() {
         </CardHeader>
         <CardContent className='flex flex-col gap-6'>
           <form
+            method='post'
             className='flex flex-col gap-4'
             onSubmit={(event) => {
               event.preventDefault();

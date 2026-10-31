@@ -1,5 +1,6 @@
 import { createIsomorphicFn } from '@tanstack/react-start';
 import { getRequestUrl } from '@tanstack/react-start/server';
+import { config } from '~/linkleaf.config';
 
 type Site = {
   name: string;
@@ -23,11 +24,11 @@ type Site = {
 
 /** What search engines and link previews read about this site. */
 export const site: Site = {
-  name: 'My App',
-  description: 'Built with Layerwise',
+  name: config.name,
+  description: config.description,
   url: '',
-  image: '',
-  imageAlt: '',
+  image: '/og-image.png',
+  imageAlt: `${config.name}: ${config.tagline}`,
   googleSiteVerification: ''
 };
 

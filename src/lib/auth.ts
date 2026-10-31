@@ -16,7 +16,10 @@ export const auth = betterAuth({
       sameSite: 'none',
       secure: true,
       partitioned: true
-    }
+    },
+    // Keep raw IP addresses out of the session table. Rate limits are handled
+    // in `routes/api/auth/$.ts` with a salted hash instead.
+    ipAddress: { disableIpTracking: true }
   },
   database: drizzleAdapter(db, { provider: 'sqlite', schema }),
   emailAndPassword: {

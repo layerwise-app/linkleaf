@@ -1,53 +1,34 @@
-import {
-  ErrorComponent,
-  Link,
-  rootRouteId,
-  useMatch,
-  useRouter,
-} from '@tanstack/react-router'
-import type { ErrorComponentProps } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router';
+import type { ErrorComponentProps } from '@tanstack/react-router';
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
-  const router = useRouter()
-  const isRoot = useMatch({
-    strict: false,
-    select: (state) => state.id === rootRouteId,
-  })
-
-  console.error(error)
+  const router = useRouter();
+  console.error(error);
 
   return (
-    <div className="min-w-0 flex-1 p-4 flex flex-col items-center justify-center gap-6">
-      <ErrorComponent error={error} />
-      <div className="flex gap-2 items-center flex-wrap">
+    <main className='flex min-h-dvh flex-col items-center justify-center gap-4 bg-background p-6 text-center'>
+      <h1 className='font-heading text-3xl font-semibold tracking-tight'>
+        Something went wrong
+      </h1>
+      <p className='max-w-sm text-muted-foreground'>
+        That’s on us. Try again, and if it keeps happening, come back in a little
+        while.
+      </p>
+      <div className='flex flex-wrap justify-center gap-3'>
         <button
-          onClick={() => {
-            router.invalidate()
-          }}
-          className={`px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded-sm text-white uppercase font-extrabold`}
+          type='button'
+          onClick={() => router.invalidate()}
+          className='inline-flex h-11 items-center rounded-full bg-primary px-6 font-medium text-primary-foreground'
         >
-          Try Again
+          Try again
         </button>
-        {isRoot ? (
-          <Link
-            to="/"
-            className={`px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded-sm text-white uppercase font-extrabold`}
-          >
-            Home
-          </Link>
-        ) : (
-          <Link
-            to="/"
-            className={`px-2 py-1 bg-gray-600 dark:bg-gray-700 rounded-sm text-white uppercase font-extrabold`}
-            onClick={(e) => {
-              e.preventDefault()
-              window.history.back()
-            }}
-          >
-            Go Back
-          </Link>
-        )}
+        <Link
+          to='/'
+          className='inline-flex h-11 items-center rounded-full border px-6 font-medium'
+        >
+          Back to home
+        </Link>
       </div>
-    </div>
-  )
+    </main>
+  );
 }

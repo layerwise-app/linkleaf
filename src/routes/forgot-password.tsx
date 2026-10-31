@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { authClient } from '~/lib/auth-client';
+import { Logo } from '~/components/brand/Logo';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -53,7 +54,8 @@ function ForgotPasswordPage() {
 
   if (resetPassword.isSuccess) {
     return (
-      <div className='flex min-h-svh items-center justify-center p-4'>
+      <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-4'>
+      <Logo />
         <Card className='w-full max-w-sm'>
           <CardHeader>
             <CardTitle>Password reset</CardTitle>
@@ -72,7 +74,8 @@ function ForgotPasswordPage() {
   }
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
+    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-4'>
+      <Logo />
       <Card className='w-full max-w-sm'>
         <CardHeader>
           <CardTitle>Reset your password</CardTitle>
@@ -82,6 +85,7 @@ function ForgotPasswordPage() {
         </CardHeader>
         <CardContent className='flex flex-col gap-4'>
           <form
+            method='post'
             className='flex flex-col gap-4'
             onSubmit={(event) => {
               event.preventDefault();
@@ -123,6 +127,7 @@ function ForgotPasswordPage() {
           </form>
           {requestReset.isSuccess ? (
             <form
+              method='post'
               className='flex flex-col gap-4'
               onSubmit={(event) => {
                 event.preventDefault();

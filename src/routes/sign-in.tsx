@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useHydrated,
+  useNavigate
+} from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { ChevronDownIcon } from 'lucide-react';
 import { authClient } from '~/lib/auth-client';
+import { getAuthSession } from '~/lib/auth.functions';
+import { Logo } from '~/components/brand/Logo';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -22,12 +30,16 @@ import { Separator } from '~/components/ui/separator';
 import { seo } from '~/utils/seo';
 
 export const Route = createFileRoute('/sign-in')({
+  beforeLoad: async () => {
+    if (await getAuthSession()) throw redirect({ to: '/dashboard' });
+  },
   head: () => seo({ title: 'Sign in', noindex: true }),
   component: SignInPage
 });
 
 function SignInPage() {
   const navigate = useNavigate();
+  const hydrated = useHydrated();
   const [passwordEmail, setPasswordEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otpEmail, setOtpEmail] = useState('');
@@ -56,7 +68,8 @@ function SignInPage() {
   });
 
   return (
-    <div className='flex min-h-svh items-center justify-center p-4'>
+    <div className='flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-4'>
+      <Logo />
       <Card className='w-full max-w-sm'>
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
@@ -66,6 +79,7 @@ function SignInPage() {
         </CardHeader>
         <CardContent className='flex flex-col gap-6'>
           <form
+            method='post'
             className='flex flex-col gap-4'
             onSubmit={(event) => {
               event.preventDefault();
@@ -94,7 +108,7 @@ function SignInPage() {
                 {sendOtp.error.message}
               </p>
             ) : null}
-            <Button type='submit' disabled={sendOtp.isPending}>
+            <Button type='submit' disabled={!hydrated || sendOtp.isPending}>
               {sendOtp.isPending ? 'Sending code…' : 'Continue with email'}
             </Button>
           </form>
@@ -112,6 +126,7 @@ function SignInPage() {
             </CollapsibleTrigger>
             <CollapsibleContent className='pt-4'>
               <form
+                method='post'
                 className='flex flex-col gap-4'
                 onSubmit={(event) => {
                   event.preventDefault();
@@ -159,7 +174,7 @@ function SignInPage() {
                     {signInWithPassword.error.message}
                   </p>
                 ) : null}
-                <Button type='submit' disabled={signInWithPassword.isPending}>
+                <Button type='submit' disabled={!hydrated || signInWithPassword.isPending}>
                   {signInWithPassword.isPending
                     ? 'Signing in…'
                     : 'Sign in with password'}
