@@ -18,6 +18,7 @@ images follow it.
 - **Words:** the landing page copy is in `src/routes/index.tsx`.
 - **Share image and icons:** replace `public/og-image.png` and the icons in
   `public/`.
+  Each public page also gets its own share image at `/og/<username>.png`.
 - **Example pages:** they're seeded by a migration from
   `scripts/build-seed-sql.mjs`, and their avatars are in `public/examples/`. To
   change them, see the note at the top of that script.
